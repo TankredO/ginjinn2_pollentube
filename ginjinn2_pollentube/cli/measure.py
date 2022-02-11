@@ -15,14 +15,19 @@ if TYPE_CHECKING:
 
 
 def measure_tubes_polylines(
-    ann_file: str, scales: Union[None, Dict[str, float], float] = None
+    ann_file: str, scales: Union[None, str, float] = None
 ) -> 'pd.DataFrame':
     from ..core.measure import (
         measure_tube_lengths_from_polyline,
         get_scales_from_polylines,
     )
 
-    scale = get_scales_from_polylines(ann_file) if scales is None else scales
+    if scales is None:
+        scale = get_scales_from_polylines(ann_file)
+    elif isinstance(scales, str):
+        scale = get_scales_from_polylines(scales)
+    else:
+        scale = scales
 
     tube_df = measure_tube_lengths_from_polyline(ann_file=ann_file, scale=scale)
 
