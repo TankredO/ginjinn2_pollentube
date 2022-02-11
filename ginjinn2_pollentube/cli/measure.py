@@ -14,7 +14,9 @@ if TYPE_CHECKING:
     import pandas as pd
 
 
-def measure_tubes_polylines(ann_file: str, scales: Union[None, Dict[str, float], float] = None) -> 'pd.DataFrame':
+def measure_tubes_polylines(
+    ann_file: str, scales: Union[None, Dict[str, float], float] = None
+) -> 'pd.DataFrame':
     from ..core.measure import (
         measure_tube_lengths_from_polyline,
         get_scales_from_polylines,
@@ -210,7 +212,7 @@ def measure(
             ann_file=str(ann_file), scales=scale, correction=(0, 1)
         )
     else:
-        tube_df = measure_tubes_polylines(ann_file=str(ann_file))
+        tube_df = measure_tubes_polylines(ann_file=str(ann_file), scales=scale)
 
     tube_df.to_csv(out_tubes, index=False)
     print(f'Tube-wise measurements written to {out_tubes}.')
