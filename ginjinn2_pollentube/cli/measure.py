@@ -180,11 +180,10 @@ def measure(
     import sys
     import pandas as pd
 
-    # check if outputs already exist
+    # check if output files already exist
     out_tubes = Path(f'{out_prefix}_all.csv')
     out_imgwise = Path(f'{out_prefix}_imgwise.csv')
     out_grpwise = Path(f'{out_prefix}_grpwise.csv')
-
     if not force:
         if out_tubes.exists():
             sys.stderr.write(
@@ -222,6 +221,7 @@ def measure(
     tube_df.to_csv(out_tubes, index=False)
     print(f'Tube-wise measurements written to {out_tubes}.')
 
+    # aggregate results by image
     tube_df_imgwise = tube_df.groupby('image_name')[
         ['image_name', 'length_mm']
     ].describe()
@@ -232,6 +232,7 @@ def measure(
     tube_df_imgwise.to_csv(out_imgwise, index=True)
     print(f'Image-wise measurements written to {out_imgwise}.')
 
+    # aggregate results by group
     if not group_file is None:
         group_df = pd.read_csv(group_file, dtype=str, sep='\s+', header=None)
         group_dict = group_df.set_index(0).to_dict()[1]
